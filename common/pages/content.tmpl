@@ -1,16 +1,14 @@
 {{define "content"}}
     <script>
-        $('a.new-tab-link').on('click', function () {
+        $('a.new-tab-link').unbind('click').on('click', function () {
             listenerForAddNavTab($(this).attr('href'), $(this).attr('data-title'))
         });
     </script>
-    <script src="{{link .CdnUrl .UrlPrefix "/assets/dist/js/content.min.js"}}"></script>
     {{if ne .Panel.CSS ""}}
-        <script>
+        <style>
             {{.Panel.CSS}}
-        </script>
+        </style>
     {{end}}
-    {{.Panel.JS}}
     {{.AssetsList}}
     {{if ne .Panel.Title ""}}
         <section class="content-header">
@@ -34,5 +32,23 @@
         <script>
             {{.Panel.JS}}
         </script>
+    {{end}}
+
+    {{if .Iframe}}
+        <style>
+            .content-wrapper, .main-footer {
+                -webkit-transition: none;
+                -moz-transition: none;
+                -o-transition: none;
+                transition: none;
+                margin-left: 0px;
+            }
+            .skin-black .wrapper {
+                background-color: #ffffff !important;
+            }
+            .skin-black .wrapper .content-wrapper {
+                background-color: #ffffff !important;
+            }
+        </style>
     {{end}}
 {{end}}

@@ -3,8 +3,8 @@ package chart_legend
 import (
 	"bytes"
 	"fmt"
-	"github.com/GoAdminGroup/go-admin/modules/logger"
-	adminTemplate "github.com/GoAdminGroup/go-admin/template"
+	"github.com/HongJaison/go-admin/modules/logger"
+	adminTemplate "github.com/HongJaison/go-admin/template"
 	"github.com/HongJaison/themes2/sword/components"
 	"html/template"
 )

@@ -5,7 +5,9 @@
                 <thead>
                 <tr>
                     {{range $key, $head := .Thead}}
-                        {{if eq $head.Width ""}}
+                        {{if eq $head.Width "0px"}}
+                            <th>
+                        {{else if eq $head.Width ""}}
                             <th>
                         {{else}}
                             <th style="width: {{$head.Width}}">
@@ -19,6 +21,7 @@
         {{end}}
         <tbody>
         {{if eq .Type "data-table"}}
+            {{$SortUrlParam := .SortUrl}}
             <tr>
                 {{if eq .IsTab false}}
                     <th style="text-align: center;">
@@ -27,7 +30,9 @@
                 {{end}}
                 {{range $key, $head := .Thead}}
                     {{if eq $head.Hide false}}
-                        {{if eq $head.Width ""}}
+                        {{if eq $head.Width "0px"}}
+                            <th>
+                        {{else if eq $head.Width ""}}
                             <th>
                         {{else}}
                             <th style="width: {{$head.Width}}">
@@ -134,7 +139,7 @@
                         {{else}}
                             <td style="width: {{$head2.Width}}">
                         {{end}}
-                            {{(index $info $head2.Head).Content}}
+                        {{(index $info $head2.Head).Content}}
                         </td>
                     {{end}}
                 {{end}}
@@ -241,12 +246,18 @@
                 if (sort !== -1 && sort_type !== -1) {
                     let sortFa = $('#sort-' + sort);
                     if (sort_type === 'asc') {
-                        sortFa.attr('href', '?__sort=' + sort + "&__sort_type=desc")
+                        sortFa.attr('href', '?__sort=' + sort + "&__sort_type=desc" + decodeURIComponent("{{.SortUrl}}"))
                     } else {
-                        sortFa.attr('href', '?__sort=' + sort + "&__sort_type=asc")
+                        sortFa.attr('href', '?__sort=' + sort + "&__sort_type=asc" + decodeURIComponent("{{.SortUrl}}"))
                     }
                     sortFa.removeClass('fa-sort');
                     sortFa.addClass('fa-sort-amount-' + sort_type);
+                } else {
+                    let sortParam = decodeURIComponent("{{.SortUrl}}");
+                    let sortHeads = $(".fa.fa-fw.fa-sort");
+                    for (let i = 0; i < sortHeads.length; i++) {
+                        $(sortHeads[i]).attr('href', $(sortHeads[i]).attr('href') + sortParam)
+                    }
                 }
             });
 
@@ -256,7 +267,7 @@
 
             {{if ne .IsHideRowSelector true}}
 
-            $('.column-select-all').on('click', function () {
+            $('.column-select-all').unbind('click').on('click', function () {
                 if ($(this).data('check') === '') {
                     $('.column-select-item').iCheck('check');
                     $(this).data('check', 'true')
@@ -266,7 +277,7 @@
                 }
             });
 
-            $('.column-select-submit').on('click', function () {
+            $('.column-select-submit').unbind('click').on('click', function () {
 
                 let param = new Map();
                 param.set('__columns', selectedAllFieldsRows().join(','));
@@ -292,7 +303,7 @@
 
             {{if .ExportUrl}}
 
-            $('.grid-batch-1').on('click', function () {
+            $('.grid-batch-1').unbind('click').on('click', function () {
                 let rows = selectedRows();
                 if (rows.length > 0) {
                     ExportAll(rows.join())
@@ -331,7 +342,7 @@
                 DeletePost($(this).data('id'))
             });
 
-            $('.grid-batch-0').on('click', function () {
+            $('.grid-batch-0').unbind('click').on('click', function () {
                 let rows = selectedRows();
                 if (rows.length > 0) {
                     DeletePost(rows.join())
@@ -385,7 +396,14 @@
                                 } else {
                                     swal(data.msg, '', 'error');
                                 }
-                            }
+                            },
+                            error: function (data) {
+                                if (data.responseText !== "") {
+                                    swal(data.responseJSON.msg, '', 'error');
+                                } else {
+                                    swal("{{lang "error"}}", '', 'error');
+                                }
+                            },
                         });
                     });
             }

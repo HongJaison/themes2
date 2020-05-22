@@ -1,6 +1,69 @@
 package adminlte
 
-var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
+var TemplateList = map[string]string{"403": `<div class="missing-content">
+    <div class="missing-content-title">403</div>
+    <div class="missing-content-title-subtitle">Sorry, you don't have access to this page.</div>
+</div>
+
+<style>
+.missing-content {
+    padding: 48px 32px;
+}
+.missing-content-title {
+    color: rgba(0,0,0,.85);
+    font-size: 54px;
+    line-height: 1.8;
+    text-align: center;
+}
+.missing-content-title-subtitle {
+    color: rgba(0,0,0,.45);
+    font-size: 18px;
+    line-height: 1.6;
+    text-align: center;
+}
+</style>`, "404": `<div class="missing-content">
+    <div class="missing-content-title">404</div>
+    <div class="missing-content-title-subtitle">Sorry, the page you visited does not exist.</div>
+</div>
+
+<style>
+.missing-content {
+    padding: 48px 32px;
+}
+.missing-content-title {
+    color: rgba(0,0,0,.85);
+    font-size: 54px;
+    line-height: 1.8;
+    text-align: center;
+}
+.missing-content-title-subtitle {
+    color: rgba(0,0,0,.45);
+    font-size: 18px;
+    line-height: 1.6;
+    text-align: center;
+}
+</style>`, "500": `<div class="error-content">
+    <div class="error-content-title">500</div>
+    <div class="error-content-title-subtitle">Sorry, the server is reporting an error.</div>
+</div>
+
+<style>
+.error-content {
+    padding: 48px 32px;
+}
+.error-content-title {
+    color: rgba(0,0,0,.85);
+    font-size: 54px;
+    line-height: 1.8;
+    text-align: center;
+}
+.error-content-title-subtitle {
+    color: rgba(0,0,0,.45);
+    font-size: 18px;
+    line-height: 1.6;
+    text-align: center;
+}
+</style>`, "admin_panel": `{{define "admin_panel"}}
     <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
 
@@ -27,61 +90,61 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
                     <i class="fa fa-refresh"></i>
                 </a>
             </li>
-            <!-- User Account: style can be found in dropdown.less -->
-            <li class="dropdown user user-menu">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    {{if eq .User.Avatar ""}}
-                        <img src="{{.UrlPrefix}}/assets/dist/img/avatar04.png" class="user-image" alt="User Image">
-                    {{else}}
-                        <img src="{{.User.Avatar}}" class="user-image" alt="User Image">
-                    {{end}}
-                    <span class="hidden-xs">{{.User.Name}}</span>
-                </a>
-                <ul class="dropdown-menu">
-                    <!-- User image -->
-                    <li class="user-header">
+            {{if not .User.HideUserCenterEntrance}}
+                <li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         {{if eq .User.Avatar ""}}
-                            <img src="{{.UrlPrefix}}/assets/dist/img/avatar04.png" class="img-circle" alt="User Image">
+                            <img src="{{.UrlPrefix}}/assets/dist/img/avatar04.png" class="user-image" alt="User Image">
                         {{else}}
-                            <img src="{{.User.Avatar}}" class="img-circle" alt="User Image">
+                            <img src="{{.User.Avatar}}" class="user-image" alt="User Image">
                         {{end}}
-                        <p>
-                            {{.User.Name}} -{{.User.LevelName}}
-                            <small>{{.User.CreatedAt}}</small>
-                        </p>
-                    </li>
-                    <li class="user-footer">
-                        <div class="pull-left">
-                            <a href="{{.UrlPrefix}}/info/normal_manager/edit?__goadmin_edit_pk={{.User.Id}}"
-                               class="btn btn-default btn-flat">{{lang "setting"}}</a>
-                        </div>
-                        <div class="pull-right">
-                            <a href="{{.UrlPrefix}}/logout"
-                               class="no-pjax btn btn-default btn-flat">{{lang "sign out"}}</a>
-                        </div>
-                    </li>
-                </ul>
-            </li>
-            <!-- <li class="hidden-xs">
-                 <a href="javascript:;" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-             </li> -->
+                        <span class="hidden-xs">{{.User.Name}}</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="user-header">
+                            {{if eq .User.Avatar ""}}
+                                <img src="{{.UrlPrefix}}/assets/dist/img/avatar04.png" class="img-circle"
+                                     alt="User Image">
+                            {{else}}
+                                <img src="{{.User.Avatar}}" class="img-circle" alt="User Image">
+                            {{end}}
+                            <p>
+                                {{.User.Name}} -{{.User.LevelName}}
+                                <small>{{.User.CreatedAt}}</small>
+                            </p>
+                        </li>
+                        <li class="user-footer">
+                            <div class="pull-left">
+                                <a href="{{.UrlPrefix}}/info/normal_manager/edit?__goadmin_edit_pk={{.User.Id}}"
+                                   class="btn btn-default btn-flat">{{lang "setting"}}</a>
+                            </div>
+                            <div class="pull-right">
+                                <a href="{{.UrlPrefix}}/logout"
+                                   class="no-pjax btn btn-default btn-flat">{{lang "sign out"}}</a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            {{end}}
         </ul>
     </div>
-{{end}}`,"components/alert":`{{define "alert"}}
+{{end}}`, "components/alert": `{{define "alert"}}
 <div class="alert alert-{{.Theme}} alert-dismissible">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
     <h4>{{langHtml .Title}}</h4>
     {{langHtml .Content}}
 </div>
-{{end}}`,"components/box":`{{define "box"}}
-<div class="box box-{{.Theme}}">
-    {{if eq .HeadColor ""}}
-        <div class="box-header {{.HeadBorder}}">
-    {{else}}
-        <div class="box-header {{.HeadBorder}}" style="background-color: {{.HeadColor}};">
+{{end}}`, "components/box": `{{define "box"}}
+<div class="box box-{{.Theme}}" {{.Attr}}>
+    {{if ne .Header ""}}
+        {{if eq .HeadColor ""}}
+            <div class="box-header {{.HeadBorder}}">
+        {{else}}
+            <div class="box-header {{.HeadBorder}}" style="background-color: {{.HeadColor}};">
+        {{end}}
+            {{langHtml .Header}}
+        </div>
     {{end}}
-        {{langHtml .Header}}
-    </div>
     {{if ne .SecondHeader ""}}
         {{if eq .SecondHeadColor ""}}
             <div class="box-header {{.SecondHeaderClass}} {{.SecondHeadBorder}}">
@@ -100,7 +163,7 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
     </div>
     {{end}}
 </div>
-{{end}}`,"components/button":`{{define "button"}}
+{{end}}`, "components/button": `{{define "button"}}
     <div class="btn-group {{.Orientation}}" {{.Style}}>
         {{if eq .Href ""}}
             {{if ne .LoadingText ""}}
@@ -120,9 +183,124 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
             </a>
         {{end}}
     </div>
-{{end}}`,"components/col":`{{define "col"}}
+{{end}}`, "components/col": `{{define "col"}}
 <div class="{{.Size}}">{{langHtml .Content}}</div>
-{{end}}`,"components/form/code":`{{define "form_code"}}
+{{end}}`, "components/form/array": `{{define "form_array"}}
+<table class="table table-hover">
+  <tbody class="{{.Field}}-table">
+        {{range $k, $value := .ValueArr}}
+            <tr>
+                <td>
+                    <div class="form-group" style="margin-bottom: 0px;">
+                    <div class="col-sm-12">
+                        <input name="{{$.Field}}[values][]" value="{{$value}}" class="form-control" />
+                    </div>
+                    </div>
+                </td>
+
+                <td style="width: 75px;">
+                    <div class="{{$.Field}}-remove btn btn-warning btn-sm pull-right">
+                    <i class="fa fa-trash">&nbsp;</i>{{lang "remove"}}
+                    </div>
+                </td>
+            </tr>
+        {{end}}
+  </tbody>
+  <tfoot>
+    <tr>
+      <td></td>
+      <td>
+        <div class="{{.Field}}-add btn btn-success btn-sm pull-right">
+          <i class="fa fa-save"></i>&nbsp;{{lang "new"}}
+        </div>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+<template class="{{.Field}}-tpl">
+  <tr>
+    <td>
+      <div class="form-group" style="margin-bottom: 0px;">
+        <div class="col-sm-12">
+          <input name="{{.Field}}[values][]" class="form-control" />
+        </div>
+      </div>
+    </td>
+    <td style="width: 75px;">
+      <div class="{{.Field}}-remove btn btn-warning btn-sm pull-right">
+        <i class="fa fa-trash">&nbsp;</i>{{lang "remove"}}
+      </div>
+    </td>
+  </tr>
+</template>
+<script>
+  $(".{{.Field}}-add").on("click", function() {
+    var tpl = $("template.{{.Field}}-tpl").html();
+    $("tbody.{{.Field}}-table").append(tpl);
+  });
+
+  $("tbody").on("click", ".{{.Field}}-remove", function() {
+    $(this).closest("tr").remove();
+  });
+</script>
+{{ end }}
+`, "components/form/checkbox": `{{define "form_checkbox"}}
+    {{range $key, $v := .Options }}
+        <span class="icheck">
+            <label class="checkbox-inline">
+                <input type="checkbox" class="{{$.FieldClass}}" {{attr $v.SelectedLabel}} value='{{$v.Value}}' name="{{$.Field}}" style="position: absolute; opacity: 0;">
+                {{if ne $v.Text ""}}
+                    &nbsp;{{$v.Text}}&nbsp;&nbsp;
+                {{end}}
+            </label>
+        </span>
+    {{end}}
+<script>
+    $('input.{{.FieldClass}}').iCheck({checkboxClass: 'icheckbox_minimal-blue'})
+</script>
+{{end}}`, "components/form/checkbox_single": `{{define "form_checkbox_single"}}
+    <span class="icheck">
+        <label class="checkbox-inline">
+            <input type="checkbox" class="{{.FieldClass}}" {{attr (index .Options 0).SelectedLabel}} value='{{(index .Options 0).Value}}' name="{{.Field}}" style="position: absolute; opacity: 0;">
+            {{if ne (index .Options 0).Text ""}}
+                &nbsp;{{(index .Options 0).Text}}&nbsp;&nbsp;
+            {{end}}
+            {{if ne (index .Options 0).SelectedLabel "checked"}}
+                <input type="hidden" value="{{(index .Options 1).Value}}" name="{{.Field}}">
+            {{end}}
+        </label>
+    </span>
+<script>
+    $('input.{{.FieldClass}}').iCheck({checkboxClass: 'icheckbox_minimal-blue'}).on('ifChanged', function () {
+        if (this.checked) {
+            let next = $(this).parent().next();
+            if (next) {
+                next.remove();
+            }
+        } else {
+            $(this).parent().parent().append('<input type="hidden" value="{{(index .Options 1).Value}}" name="{{.Field}}">')
+        }
+    });
+</script>
+{{end}}
+
+`, "components/form/checkbox_stacked": `{{define "form_checkbox_stacked"}}
+    <div class="checkbox_stacked" style="margin-top: -7px;">
+    {{range $key, $v := .Options }}
+        <div class="checkbox icheck">
+            <label class="checkbox-inline">
+                <input type="checkbox" class="{{$.FieldClass}}" {{attr $v.SelectedLabel}} value='{{$v.Value}}' name="{{$.Field}}" style="position: absolute; opacity: 0;">
+                {{if ne $v.Text ""}}
+                    &nbsp;{{$v.Text}}&nbsp;&nbsp;
+                {{end}}
+            </label>
+        </div>
+    {{end}}
+    </div>
+<script>
+    $('input.{{.FieldClass}}').iCheck({checkboxClass: 'icheckbox_minimal-blue'})
+</script>
+{{end}}`, "components/form/code": `{{define "form_code"}}
     <pre id="{{.Field}}" class="ace_editor" style="min-height:200px">
         <textarea {{if .Must}}required="1"{{end}} class="ace_text-input {{.Field}}"
                 {{if not .Editable}}disabled="disabled"{{end}}>{{.Value}}</textarea>
@@ -138,36 +316,50 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
         {{$field}}editor.setReadOnly({{if not .Editable}}true{{else}}false{{end}});
         {{$field}}editor.setOptions(options);
         {{$field}}editor.session.on('change', function(delta) {
-            $('#{{.Field}}_input').html({{$field}}editor.getValue());
+            $('#{{.Field}}_input').html(encodeURIComponent({{$field}}editor.getValue()));
         });
     </script>
-{{end}}`,"components/form/color":`{{define "form_color"}}
-    <div class="input-group colorpicker-element">
-        <span class="input-group-addon"><i style="background-color: rgb(0, 0, 0);"></i></span>
-        <input {{if .Must}}required="1"{{end}} style="width: 140px" type="text" id="{{.Field}}" name="{{.Field}}"
-               value="" class="form-control {{.Field}}" placeholder="{{.Value}}">
-    </div>
+{{end}}`, "components/form/color": `{{define "form_color"}}
+    {{if .Editable}}
+        <div class="input-group colorpicker-element">
+            <span class="input-group-addon"><i style="background-color: rgb(0, 0, 0);"></i></span>
+            <input {{if .Must}}required="1"{{end}} style="width: 140px" type="text" name="{{.Field}}"
+                   value="" class="form-control {{.Field}}" placeholder="{{.Value}}">
+        </div>
+    {{else}}
+        <div class="box box-solid box-default no-margin">
+            <div class="box-body">{{.Value}}</div>
+        </div>
+        <input type="hidden" name="{{.Field}}" value='{{.Value}}'>
+    {{end}}
     <script>
         $('.{{.Field}}').parent().colorpicker([]);
     </script>
-{{end}}`,"components/form/currency":`{{define "form_currency"}}
-    <div class="input-group">
-        <span class="input-group-addon">$</span>
-        <input {{if .Must}}required="1"{{end}} style="width: 120px; text-align: right;" type="text" id="{{.Field}}"
-               name="{{.Field}}"
-               value="{{.Value}}" class="form-control {{.Field}}" placeholder="{{.Head}}">
-    </div>
-    <script>
-        $(function () {
-            $('.{{.Field}}').inputmask({
-                "alias": "currency",
-                "radixPoint": ".",
-                "prefix": "",
-                "removeMaskOnSubmit": true
+{{end}}`, "components/form/currency": `{{define "form_currency"}}
+    {{if .Editable}}
+        <div class="input-group">
+            <span class="input-group-addon">$</span>
+            <input {{if .Must}}required="1"{{end}} style="width: 120px; text-align: right;" type="text"
+                   name="{{.Field}}"
+                   value="{{.Value}}" class="form-control {{.Field}}" placeholder="{{.Head}}">
+        </div>
+        <script>
+            $(function () {
+                $('.{{.Field}}').inputmask({
+                    "alias": "currency",
+                    "radixPoint": ".",
+                    "prefix": "",
+                    "removeMaskOnSubmit": true
+                });
             });
-        });
-    </script>
-{{end}}`,"components/form/custom":`{{define "form_custom"}}
+        </script>
+    {{else}}
+        <div class="box box-solid box-default no-margin">
+            <div class="box-body">{{.Value}}</div>
+        </div>
+        <input type="hidden" name="{{.Field}}" value='{{.Value}}'>
+    {{end}}
+{{end}}`, "components/form/custom": `{{define "form_custom"}}
     <div class="input-group">
         {{.CustomContent}}
     </div>
@@ -181,7 +373,7 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
             {{.CustomCss}}
         </style>
     {{end}}
-{{end}}`,"components/form/datetime":`{{define "form_datetime"}}
+{{end}}`, "components/form/datetime": `{{define "form_datetime"}}
     {{if not .Editable}}
         <div class="box box-solid box-default no-margin">
             <div class="box-body" style="min-height: 40px;">
@@ -195,64 +387,70 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
                 <span class="input-group-addon">{{.Label}}</span>
             {{end}}
             <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i></span>
-            <input {{if .Must}}required="1"{{end}} style="width: 160px" type="text" id="{{.Field}}"
+            <input {{if .Must}}required="1"{{end}} style="width: 170px" type="text" id="{{.Field}}"
                    name="{{.Field}}"
                    value="{{.Value}}"
                    class="form-control {{.Field}}" placeholder="{{.Placeholder}}">
         </div>
         <script>
             $(function () {
-                $('.{{.Field}}').parent().datetimepicker({
-                    "format": "YYYY-MM-DD HH:mm:ss",
-                    "locale": "zh-CN",
-                    "allowInputToggle": true
-                });
+                $('.{{.Field}}').parent().datetimepicker({{.OptionExt}});
             });
         </script>
     {{end}}
-{{end}}`,"components/form/datetime_range":`{{define "form_datetime_range"}}
-    <div class="input-group">
-        {{if ne .Label ""}}
-            <span class="input-group-addon">{{.Label}}</span>
-        {{end}}
-        <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i></span>
-        <input type="text" id="{{.Field}}_start__goadmin" name="{{.Field}}_start__goadmin" value="{{.Value}}"
-               class="form-control {{.Field}}_start__goadmin" placeholder="{{.Placeholder}}">
-        <span class="input-group-addon" style="border-left: 0; border-right: 0;">-</span>
-        <input type="text" id="{{.Field}}_end__goadmin" name="{{.Field}}_end__goadmin" value="{{.Value2}}"
-               class="form-control {{.Field}}_end__goadmin" placeholder="{{.Placeholder}}">
-    </div>
-    <script>
-        $(function () {
-            $('.{{.Field}}_start__goadmin').datetimepicker({"format": "YYYY-MM-DD HH:mm:ss", "locale": "zh-CN"});
-            $('.{{.Field}}_end__goadmin').datetimepicker({
-                "format": "YYYY-MM-DD HH:mm:ss",
-                "locale": "zh-CN",
-                "useCurrent": false
+{{end}}`, "components/form/datetime_range": `{{define "form_datetime_range"}}
+    {{if .Editable}}
+        <div class="input-group">
+            {{if ne .Label ""}}
+                <span class="input-group-addon">{{.Label}}</span>
+            {{end}}
+            <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i></span>
+            <input type="text" id="{{.Field}}_start__goadmin" name="{{.Field}}_start__goadmin" value="{{.Value}}"
+                   class="form-control {{.Field}}_start__goadmin" placeholder="{{.Placeholder}}">
+            <span class="input-group-addon" style="border-left: 0; border-right: 0;">-</span>
+            <input type="text" id="{{.Field}}_end__goadmin" name="{{.Field}}_end__goadmin" value="{{.Value2}}"
+                   class="form-control {{.Field}}_end__goadmin" placeholder="{{.Placeholder}}">
+        </div>
+        <script>
+            $(function () {
+                $('.{{.Field}}_start__goadmin').datetimepicker({{.OptionExt}});
+                $('.{{.Field}}_end__goadmin').datetimepicker({{.OptionExt2}});
+                $('.{{.Field}}_start__goadmin').on("dp.change", function (e) {
+                    $('.{{.Field}}_end__goadmin').data("DateTimePicker").minDate(e.date);
+                });
+                $('.{{.Field}}_end__goadmin').on("dp.change", function (e) {
+                    $('.{{.Field}}_start__goadmin').data("DateTimePicker").maxDate(e.date);
+                });
             });
-            $('.{{.Field}}_start__goadmin').on("dp.change", function (e) {
-                $('.{{.Field}}_end__goadmin').data("DateTimePicker").minDate(e.date);
-            });
-            $('.{{.Field}}_end__goadmin').on("dp.change", function (e) {
-                $('.{{.Field}}_start__goadmin').data("DateTimePicker").maxDate(e.date);
-            });
-        });
-    </script>
-{{end}}`,"components/form/default":`{{define "form_default"}}
+        </script>
+    {{else}}
+        <div class="box box-solid box-default no-margin">
+            <div class="box-body">{{.Value}}</div>
+        </div>
+        <input type="hidden" name="{{.Field}}" value='{{.Value}}'>
+    {{end}}
+{{end}}`, "components/form/default": `{{define "form_default"}}
     <div class="box box-solid box-default no-margin">
         <div class="box-body" style="min-height: 40px;">
             {{.Value}}
         </div>
     </div>
     <input type="hidden" name="{{.Field}}" value='{{.Value}}'>
-{{end}}`,"components/form/email":`{{define "form_email"}}
-    <div class="input-group">
-        <span class="input-group-addon"><i class="fa fa-envelope fa-fw"></i></span>
-        <input {{if .Must}}required="1"{{end}} type="email" id="{{.Field}}" name="{{.Field}}" value='{{.Value}}'
-               class="form-control json"
-               placeholder="{{.Placeholder}}">
-    </div>
-{{end}}`,"components/form/file":`{{define "form_file"}}
+{{end}}`, "components/form/email": `{{define "form_email"}}
+    {{if .Editable}}
+        <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-envelope fa-fw"></i></span>
+            <input {{if .Must}}required="1"{{end}} type="email" name="{{.Field}}" value='{{.Value}}'
+                   class="form-control {{.Field}}"
+                   placeholder="{{.Placeholder}}">
+        </div>
+    {{else}}
+        <div class="box box-solid box-default no-margin">
+            <div class="box-body">{{.Value}}</div>
+        </div>
+        <input type="hidden" name="{{.Field}}" value='{{.Value}}'>
+    {{end}}
+{{end}}`, "components/form/file": `{{define "form_file"}}
     <input type="file" class="{{.Field}}" name="{{.Field}}" data-initial-preview="{{.Value2}}"
            data-initial-caption="{{.Value}}">
     <input type="hidden" value="0" name="{{.Field}}__delete_flag" class="{{.Field}}__delete_flag">
@@ -262,13 +460,13 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
             $(".{{.Field}}__delete_flag").val("1")
         });
     </script>
-{{end}}`,"components/form/help_block":`{{define "help_block"}}
+{{end}}`, "components/form/help_block": `{{define "help_block"}}
     {{if ne . ""}}
         <span class="help-block">
             <i class="fa fa-info-circle"></i>&nbsp;{{.}}
         </span>
     {{end}}
-{{end}}`,"components/form/iconpicker":`{{define "form_iconpicker"}}
+{{end}}`, "components/form/iconpicker": `{{define "form_iconpicker"}}
     <div class="input-group">
         <span class="input-group-addon"><i class="fa"></i></span>
         {{if eq .Value ""}}
@@ -284,15 +482,22 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
     <script>
         $('.{{.Field}}').iconpicker({placement: 'bottomLeft'});
     </script>
-{{end}}`,"components/form/ip":`{{define "form_ip"}}
-    <div class="input-group">
-        <span class="input-group-addon"><i class="fa fa-laptop fa-fw"></i></span>
-        <input {{if .Must}}required="1"{{end}} style="width: 130px" type="text" id="{{.Field}}" name="{{.Field}}"
-               value='{{.Value}}' class="form-control json"
-               placeholder="{{.Placeholder}}">
-    </div>
-{{end}}`,"components/form/multi_file":`{{define "form_multi_file"}}
-    <input type="file" class="{{.Field}}" name="{{.Field}}" multiple data-initial-caption="{{lang "Input"}} {{.Field}}">
+{{end}}`, "components/form/ip": `{{define "form_ip"}}
+    {{if .Editable}}
+        <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-laptop fa-fw"></i></span>
+            <input {{if .Must}}required="1"{{end}} style="width: 130px" type="text" name="{{.Field}}"
+                   value='{{.Value}}' class="form-control {{.Field}}"
+                   placeholder="{{.Placeholder}}">
+        </div>
+    {{else}}
+        <div class="box box-solid box-default no-margin">
+            <div class="box-body">{{.Value}}</div>
+        </div>
+        <input type="hidden" name="{{.Field}}" value='{{.Value}}'>
+    {{end}}
+{{end}}`, "components/form/multi_file": `{{define "form_multi_file"}}
+    <input type="file" class="{{.Field}}" name="{{.Field}}" multiple data-initial-caption="{{.Placeholder}}">
     <input type="hidden" value="0" name="{{.Field}}__delete_flag" class="{{.Field}}__delete_flag">
     <script>
         mutilfileoptions = {{.OptionExt}};
@@ -304,13 +509,20 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
             $(".{{.Field}}__delete_flag").val("1")
         });
     </script>
-{{end}}`,"components/form/number":`{{define "form_number"}}
-    <div class="input-group">
-        <input {{if .Must}}required="1"{{end}} style="width: 100px; text-align: center;" type="text" id="{{.Field}}"
-               name="{{.Field}}"
-               value="{{.Value}}" class="form-control {{.Field}}"
-               placeholder="{{.Head}}">
-    </div>
+{{end}}`, "components/form/number": `{{define "form_number"}}
+    {{if .Editable}}
+        <div class="input-group">
+            <input {{if .Must}}required="1"{{end}} style="width: 100px; text-align: center;" type="text"
+                   name="{{.Field}}"
+                   value="{{.Value}}" class="form-control {{.Field}}"
+                   placeholder="{{.Head}}">
+        </div>
+    {{else}}
+        <div class="box box-solid box-default no-margin">
+            <div class="box-body">{{.Value}}</div>
+        </div>
+        <input type="hidden" name="{{.Field}}" value='{{.Value}}'>
+    {{end}}
     <script>
         $(function () {
             $('.{{.Field}}:not(.initialized)')
@@ -322,17 +534,24 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
                 });
         })
     </script>
-{{end}}`,"components/form/number_range":`{{define "form_number_range"}}
-    <div class="input-group number-range">
-        <input style="text-align: center;" type="text" id="{{.Field}}_start__goadmin"
-               name="{{.Field}}_start__goadmin"
-               value="{{.Value}}" class="form-control {{.Field}}_start__goadmin"
-               placeholder="{{.Head}}">
-        <span class="input-group-addon" style="border-left: 0; border-right: 0;">-</span>
-        <input style="text-align: center;" type="text" id="{{.Field}}_end__goadmin" name="{{.Field}}_end__goadmin"
-               value="{{.Value2}}" class="form-control {{.Field}}_end__goadmin"
-               placeholder="{{.Head}}">
-    </div>
+{{end}}`, "components/form/number_range": `{{define "form_number_range"}}
+    {{if .Editable}}
+        <div class="input-group number-range">
+            <input style="text-align: center;" type="text" id="{{.Field}}_start__goadmin"
+                   name="{{.Field}}_start__goadmin"
+                   value="{{.Value}}" class="form-control {{.Field}}_start__goadmin"
+                   placeholder="{{.Head}}">
+            <span class="input-group-addon" style="border-left: 0; border-right: 0;">-</span>
+            <input style="text-align: center;" type="text" id="{{.Field}}_end__goadmin" name="{{.Field}}_end__goadmin"
+                   value="{{.Value2}}" class="form-control {{.Field}}_end__goadmin"
+                   placeholder="{{.Head}}">
+        </div>
+    {{else}}
+        <div class="box box-solid box-default no-margin">
+            <div class="box-body">{{.Value}}</div>
+        </div>
+        <input type="hidden" name="{{.Field}}" value='{{.Value}}'>
+    {{end}}
     <script>
         $(function () {
             $('.{{.Field}}_start__goadmin:not(.initialized)')
@@ -356,32 +575,52 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
             width: 100%;
         }
     </style>
-{{end}}`,"components/form/password":`{{define "form_password"}}
+{{end}}`, "components/form/password": `{{define "form_password"}}
     {{if .Editable}}
         <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-eye-slash"></i></span>
-            <input {{if .Must}}required="1"{{end}} type="password" id="{{.Field}}" name="{{.Field}}"
+            <input {{if .Must}}required="1"{{end}} type="password" name="{{.Field}}"
                    value="{{.Value}}"
-                   class="form-control password" placeholder="{{.Placeholder}}">
+                   class="form-control {{.Field}}" placeholder="{{.Placeholder}}">
         </div>
     {{else}}
         <div class="box box-solid box-default no-margin">
             <div class="box-body">********</div>
         </div>
     {{end}}
-{{end}}`,"components/form/radio":`{{define "form_radio"}}
-    {{$field := .Field}}
-    {{range $key, $v := .Options }}
-        <input type="radio" name="{{$field}}" value="{{$v.Value}}"
-               class="minimal {{$field}}" {{$v.SelectedLabel}}
-               style="position: absolute; opacity: 0;">&nbsp;{{$v.Text}}&nbsp;&nbsp;
+{{end}}`, "components/form/radio": `{{define "form_radio"}}
+    {{if .Editable}}
+        <div class="radio">
+        {{range $key, $v := .Options }}
+            <input type="radio" name="{{$.Field}}" value="{{$v.Value}}"
+                   class="minimal {{$.Field}}" {{attr $v.SelectedLabel}}
+                   style="position: absolute; opacity: 0;">&nbsp;{{if ne $v.TextHTML ""}}{{$v.TextHTML}}{{else}}{{$v.Text}}{{end}}&nbsp;&nbsp;
+        {{end}}
+        </div>
+        <script>
+            $(function () {
+                $('input.{{.Field}}').iCheck({radioClass: 'iradio_minimal-blue'});
+            });
+        </script>
+    {{else}}
+        <div class="box box-solid box-default no-margin">
+            <div class="box-body">{{.Value}}</div>
+        </div>
+        <input type="hidden" name="{{.Field}}" value='{{.Value}}'>
     {{end}}
-    <script>
-        $(function () {
-            $('.{{.Field}}').iCheck({radioClass: 'iradio_minimal-blue'});
-        });
-    </script>
-{{end}}`,"components/form/richtext":`{{define "form_rich_text"}}
+{{end}}`, "components/form/rate": `{{define "form_rate"}}
+    {{if .Editable}}
+        <div class="input-group" style="width: 120px;">
+            <input style="text-align: right;width: 120px; " placeholder="0" type="text" name="{{.Field}}" value="{{.Value}}" class="form-control {{.Field}}" />
+            <span class="input-group-addon clearfix">%</span>
+        </div>
+    {{else}}
+        <div class="box box-solid box-default no-margin">
+            <div class="box-body">{{.Value}}</div>
+        </div>
+        <input type="hidden" name="{{.Field}}" value='{{.Value}}'>
+    {{end}}
+{{end}}`, "components/form/richtext": `{{define "form_rich_text"}}
     <div id="{{.Field}}-editor">
     </div>
     <input type="hidden" id="{{.Field}}" name="{{.Field}}" value='{{.Value}}'
@@ -400,28 +639,26 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
         {{end}}
         window.wangEditor.fullscreen.init('#{{.Field}}-editor');
     </script>
-{{end}}`,"components/form/select":`{{define "form_select"}}
-    <select class="form-control {{.Field}} select2-hidden-accessible" style="width: 100%;" name="{{.Field}}[]"
+{{end}}`, "components/form/select": `{{define "form_select"}}
+    <select class="form-control {{.FieldClass}} select2-hidden-accessible" style="width: 100%;" name="{{.Field}}[]"
             multiple="" data-placeholder="{{.Placeholder}}" tabindex="-1" aria-hidden="true"
             {{if not .Editable}}disabled="disabled"{{end}}>
-        <option></option>
         {{range $key, $v := .Options }}
-            <option value='{{$v.Value}}' {{$v.SelectedLabel}}>{{$v.Text}}</option>
+            <option value='{{$v.Value}}' {{attr $v.SelectedLabel}}>{{if ne $v.TextHTML ""}}{{$v.TextHTML}}{{else}}{{$v.Text}}{{end}}</option>
         {{end}}
     </select>
     <script>
-        $(".{{.Field}}").select2({{.OptionExt}});
+        $("select.{{.FieldClass}}").select2({{.OptionExt}});
     </script>
-{{end}}`,"components/form/selectbox":`{{define "form_selectbox"}}
-    <select class="form-control {{.Field}}" style="width: 100%;" name="{{.Field}}[]" multiple="multiple"
+{{end}}`, "components/form/selectbox": `{{define "form_selectbox"}}
+    <select class="form-control {{.FieldClass}}" style="width: 100%;" name="{{.Field}}[]" multiple="multiple"
             data-placeholder="Input {{.Head}}" {{if not .Editable}}disabled="disabled"{{end}}>
         {{range  $key, $v := .Options }}
-            <option value='{{$v.Value}}' {{$v.SelectedLabel}}>{{$v.Text}}</option>
+            <option value='{{$v.Value}}' {{attr $v.SelectedLabel}}>{{if ne $v.TextHTML ""}}{{$v.TextHTML}}{{else}}{{$v.Text}}{{end}}</option>
         {{end}}
     </select>
-    <input type="hidden" name="{{.Field}}[]"/>
     <script>
-        $(".{{.Field}}").bootstrapDualListbox({
+        $("select.{{.FieldClass}}").bootstrapDualListbox({
             "infoText": "Showing all {0}",
             "infoTextEmpty": "Empty list",
             "infoTextFiltered": "{0} \/ {1}",
@@ -429,20 +666,32 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
             "filterPlaceHolder": "Filter"
         });
     </script>
-{{end}}`,"components/form/singleselect":`{{define "form_select_single"}}
-    <select class="form-control {{.Field}} select2-hidden-accessible" style="width: 100%;" name="{{.Field}}"
+{{end}}`, "components/form/singleselect": `{{define "form_select_single"}}
+    <select class="form-control {{.FieldClass}} select2-hidden-accessible" style="width: 100%;" name="{{.Field}}"
             data-multiple="false" data-placeholder="{{.Placeholder}}" tabindex="-1" aria-hidden="true"
             {{if not .Editable}}disabled="disabled"{{end}}>
         <option></option>
         {{range $key, $v := .Options }}
-            <option value='{{$v.Value}}' {{$v.SelectedLabel}}>{{$v.Text}}</option>
+            <option value='{{$v.Value}}' {{attr $v.SelectedLabel}}>{{if ne $v.TextHTML ""}}{{$v.TextHTML}}{{else}}{{$v.Text}}{{end}}</option>
         {{end}}
     </select>
     <script>
-        $(".{{.Field}}").select2({{.OptionExt}});
+        $("select.{{.FieldClass}}").select2({{.OptionExt}});
     </script>
-{{end}}`,"components/form/switch":`{{define "form_switch"}}
-    <input id="__{{.Field}}" class="{{.Field}} ga_checkbox" {{(index .Options 0).SelectedLabel}} type="checkbox"
+{{end}}`, "components/form/slider": `{{define "form_slider"}}
+    {{if .Editable}}
+        <input type="text" class="{{.Field}}" name="{{.Field}}" data-from="" value="{{.Value}}" style="display: none;">
+    {{else}}
+        <div class="box box-solid box-default no-margin">
+            <div class="box-body">{{.Value}}</div>
+        </div>
+        <input type="hidden" name="{{.Field}}" value='{{.Value}}'>
+    {{end}}
+    <script>
+        $('.{{.Field}}').ionRangeSlider({{.OptionExt}})
+    </script>
+{{end}}`, "components/form/switch": `{{define "form_switch"}}
+    <input id="__{{.Field}}" class="{{.Field}} ga_checkbox" {{attr (index .Options 0).SelectedLabel}} type="checkbox"
            name="__checkbox__{{.Field}}">
     {{$index := 0}}
     {{if eq (index .Options 0).SelectedLabel ""}}
@@ -469,37 +718,119 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
             }
         })
     </script>
-{{end}}`,"components/form/text":`{{define "form_text"}}
+{{end}}`, "components/form/table": `{{define "form_table"}}
+<table class="table table-hover">
+  <thead>
+    <tr>
+        {{range $key, $item := .TableFields }}
+            <th>{{$item.Head}}</th>
+        {{end}}
+        <th style="width: 75px;"></th>
+    </tr>
+  </thead>
+  <tbody class="{{.Field}}-table">
+    {{range $k, $v := (index .TableFields 0).ValueArr}}
+      <tr>
+          {{range $key, $item := $.TableFields }}
+              <td>
+                  <div class="form-group" style="margin-bottom: 0px;">
+                    <div class="col-sm-12">
+                        {{template "form_components" (changeValue $item $k)}}
+                    </div>
+                  </div>
+              </td>
+          {{end}}
+
+          <td class="form-group">
+              <div>
+                    <div class="{{$.Field}}-remove btn btn-warning btn-sm pull-right">
+                        <i class="fa fa-trash">&nbsp;</i>{{lang "remove"}}
+                    </div>
+              </div>
+          </td>
+      </tr>
+    {{end}}
+  </tbody>
+  <tfoot>
+    <tr>
+        {{range $key, $item := .TableFields }}
+            <td></td>
+        {{end}}
+        <td>
+            <div class="{{.Field}}-add btn btn-success btn-sm pull-right">
+            <i class="fa fa-save"></i>&nbsp;{{lang "new"}}
+            </div>
+        </td>
+    </tr>
+  </tfoot>
+</table>
+<template class="{{.Field}}-tpl">
+  <tr>
+        {{range $key, $item := .TableFields }}
+            <td>
+                <div class="form-group" style="margin-bottom: 0px;">
+                  <div class="col-sm-12">
+                    {{template "form_components" $item}}
+                  </div>
+                </div>
+            </td>
+        {{end}}
+
+        <td class="form-group">
+        <div>
+            <div class="{{.Field}}-remove btn btn-warning btn-sm pull-right">
+            <i class="fa fa-trash">&nbsp;</i>{{lang "remove"}}
+            </div>
+        </div>
+        </td>
+  </tr>
+</template>
+<script>
+  $(".{{.Field}}-add").on("click", function() {
+    var tpl = $("template.{{.Field}}-tpl").html();
+    $("tbody.{{.Field}}-table").append(tpl);
+  });
+
+  $("tbody").on("click", ".{{.Field}}-remove", function() {
+    $(this)
+      .closest("tr")
+      .remove();
+  });
+</script>
+{{ end }}
+`, "components/form/text": `{{define "form_text"}}
     {{if .Editable}}
         <div class="input-group">
-            {{if eq .Label ""}}
-                <span class="input-group-addon"><i class="fa fa-pencil fa-fw"></i></span>
-            {{else if eq .Label "free"}}
-                <div class="input-group-btn">
-                    <input type="hidden" name="{{.Field}}__operator__" class="{{.Field}}-operation" value="3">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                            style="min-width: 32px;" aria-expanded="false">
-                        {{if eq .Value2 ""}}
-                        <span class="{{.Field}}-label"> {{lang ">"}} </span>
-                    {{else}}
-                        <span class="{{.Field}}-label"> {{.Value2}} </span>
-                    {{end}}&nbsp;&nbsp;
-                        <span class="fa fa-caret-down"></span>
-                    </button>
-                    <ul class="dropdown-menu {{.Field}}_ul">
-                        <li><a href="#" data-index="gr"> {{lang ">"}} </a></li>
-                        <li><a href="#" data-index="le"> {{lang "<"}} </a></li>
-                        <li><a href="#" data-index="gq"> {{lang ">="}} </a></li>
-                        <li><a href="#" data-index="lq"> {{lang "<="}} </a></li>
-                        <li><a href="#" data-index="eq"> {{lang "="}} </a></li>
-                        <li><a href="#" data-index="ne"> {{lang "!="}} </a></li>
-                    </ul>
-                </div>
-            {{else}}
-                <span class="input-group-addon">{{.Label}}</span>
+            {{if not .HideLabel}}
+                {{if eq .Label ""}}
+                    <span class="input-group-addon"><i class="fa fa-pencil fa-fw"></i></span>
+                {{else if eq .Label "free"}}
+                    <div class="input-group-btn">
+                        <input type="hidden" name="{{.Field}}__operator__" class="{{.Field}}-operation" value="3">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                style="min-width: 32px;" aria-expanded="false">
+                            {{if eq .Value2 ""}}
+                            <span class="{{.Field}}-label"> {{lang ">"}} </span>
+                        {{else}}
+                            <span class="{{.Field}}-label"> {{.Value2}} </span>
+                        {{end}}&nbsp;&nbsp;
+                            <span class="fa fa-caret-down"></span>
+                        </button>
+                        <ul class="dropdown-menu {{.Field}}_ul">
+                            <li><a href="#" data-index="gr"> {{lang ">"}} </a></li>
+                            <li><a href="#" data-index="le"> {{lang "<"}} </a></li>
+                            <li><a href="#" data-index="gq"> {{lang ">="}} </a></li>
+                            <li><a href="#" data-index="lq"> {{lang "<="}} </a></li>
+                            <li><a href="#" data-index="eq"> {{lang "="}} </a></li>
+                            <li><a href="#" data-index="ne"> {{lang "!="}} </a></li>
+                        </ul>
+                    </div>
+                {{else}}
+                    <span class="input-group-addon">{{.Label}}</span>
+                {{end}}
             {{end}}
-            <input {{if .Must}}required="1"{{end}} type="text" id="{{.Field}}" name="{{.Field}}" value='{{.Value}}'
-                   class="form-control json" placeholder="{{.Placeholder}}">
+            <input {{if .Must}}required="1"{{end}} type="text" name="{{.Field}}" value='{{.Value}}'
+                   class="form-control {{.Field}}" placeholder="{{.Placeholder}}">
         </div>
     {{else}}
         <div class="box box-solid box-default no-margin">
@@ -517,32 +848,35 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
             })
         </script>
     {{end}}
-{{end}}`,"components/form/textarea":`{{define "form_textarea"}}
+{{end}}`, "components/form/textarea": `{{define "form_textarea"}}
     <textarea {{if .Must}}required="1"{{end}} name="{{.Field}}" class="form-control" rows="5"
               placeholder="{{.Placeholder}}"
                       {{if not .Editable}}disabled="disabled"{{end}}>{{.Value}}</textarea>
-{{end}}`,"components/form/url":`{{define "form_url"}}
+{{end}}`, "components/form/url": `{{define "form_url"}}
     <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-internet-explorer fa-fw"></i></span>
-        <input {{if .Must}}required="1"{{end}} type="text" id="{{.Field}}" name="{{.Field}}" value='{{.Value}}'
-               class="form-control json"
+        <input {{if .Must}}required="1"{{end}} type="text" name="{{.Field}}" value='{{.Value}}'
+               class="form-control {{.Field}}"
                placeholder="{{.Placeholder}}">
     </div>
-{{end}}`,"components/form":`{{define "form"}}
-    <script src={{link .CdnUrl .Prefix "/assets/dist/js/form.min.js"}}></script>
+{{end}}`, "components/form": `{{define "form"}}    
     {{.Header}}
-    <form action="{{.Url}}" method="{{.Method}}" accept-charset="UTF-8" class="form-horizontal" pjax-container
+    <form id={{.Id}} {{if .Ajax}}οnsubmit="return false;" {{end}}action="{{.Url}}" method="{{.Method}}" accept-charset="UTF-8" class="form-horizontal" {{if not .Ajax}}pjax-container{{end}}
           style="background-color: white;{{if ne (len .TabHeaders) 0}}padding: 0px;{{end}}">
         <div class="{{if ne (len .TabHeaders) 0}}row{{else}}box-body{{end}}">
 
-            {{if ne (len .TabHeaders) 0}}
-                {{ template "form_layout_tab" . }}
-            {{else if ne (len .ContentList) 0}}
-                {{ template "form_layout_two_col" . }}
-            {{else if .Layout.Flow}}
-                {{ template "form_layout_flow" . }}
+            {{if eq .FieldsHTML ""}}
+                {{if ne (len .TabHeaders) 0}}
+                    {{ template "form_layout_tab" . }}
+                {{else if ne (len .ContentList) 0}}
+                    {{ template "form_layout_two_col" . }}
+                {{else if .Layout.Flow}}
+                    {{ template "form_layout_flow" . }}
+                {{else}}
+                    {{ template "form_layout_default" . }}
+                {{end}}
             {{else}}
-                {{ template "form_layout_default" . }}
+                {{.FieldsHTML}}
             {{end}}
 
         </div>
@@ -558,7 +892,31 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
         {{end}}
     </form>
     {{.Footer}}
-{{end}}`,"components/form_components":`{{define "form_components"}}
+    {{if .Ajax}}
+        <script>
+            $("#{{.Id}}").submit(function(e){                
+                var form = $(this);
+                $.ajax({
+                    headers: {
+                        Accept: "application/json; charset=utf-8"
+                    },
+                    type: form.attr('method'),
+                    url: form.attr('action'),
+                    data: new FormData($("#{{.Id}}")[0]),
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        {{.AjaxSuccessJS}}
+                    },
+                    error : function(data) {
+                        {{.AjaxErrorJS}}
+                    }
+                });
+                e.preventDefault();
+            });
+        </script>
+    {{end}}
+{{end}}`, "components/form_components": `{{define "form_components"}}
     {{if eq .FormType.String "default"}}
         {{ template "form_default" .  }}
     {{else if eq .FormType.String "text"}}
@@ -577,12 +935,26 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
         {{ template "form_select_single" .  }}
     {{else if eq .FormType.String "textarea"}}
         {{ template "form_textarea" .  }}
+    {{else if eq .FormType.String "slider"}}
+        {{ template "form_slider" .  }}                
+    {{else if eq .FormType.String "rate"}}
+        {{ template "form_rate" .  }}                
     {{else if eq .FormType.String "iconpicker"}}
         {{ template "form_iconpicker" .  }}
     {{else if eq .FormType.String "richtext"}}
         {{ template "form_rich_text" .  }}
     {{else if eq .FormType.String "code"}}
         {{ template "form_code" .  }}
+    {{else if eq .FormType.String "checkbox_single"}}
+        {{ template "form_checkbox_single" .  }}          
+    {{else if eq .FormType.String "checkbox"}}
+        {{ template "form_checkbox" .  }}        
+    {{else if eq .FormType.String "checkbox_stacked"}}
+        {{ template "form_checkbox_stacked" .  }}         
+    {{else if eq .FormType.String "table"}}
+        {{ template "form_table" .  }}        
+    {{else if eq .FormType.String "array"}}
+        {{ template "form_array" .  }}        
     {{else if eq .FormType.String "datetime"}}
         {{ template "form_datetime" .  }}
     {{else if eq .FormType.String "datetime_range"}}
@@ -613,7 +985,7 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
             <i class="fa fa-info-circle"></i>&nbsp;{{.HelpMsg}}
         </span>
     {{end}}
-{{end}}`,"components/form_components_layout":`{{define "form_components_layout"}}
+{{end}}`, "components/form_components_layout": `{{define "form_components_layout"}}
 
     {{if ne (len .ContentList) 0}}
 
@@ -621,11 +993,11 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
             <div class="col-md-{{divide 12 (len $.ContentList)}}">
                 <div class="box-body">
                     <div class="fields-group">
-                        {{range $key, $data := $content}}
+                        {{range $key, $data := $content}}                            
                             {{if $data.Divider}}
                                 {{if $data.DividerTitle}}
                                     <div class='form-group divider'>
-                                        <div class="col-sm-{{$.HeadWidth}} control-label divider-title">{{$data.DividerTitle}}</div>
+                                        <div class="{{if eq $data.HeadWidth 0}}col-sm-{{$.HeadWidth}}{{else}}col-sm-{{$data.HeadWidth}}{{end}} control-label divider-title">{{$data.DividerTitle}}</div>
                                     </div>
                                 {{end}}
                                 <div class='col-sm-12 pb-3'>
@@ -635,15 +1007,51 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
                             {{if $data.Hide}}
                                 <input type="hidden" name="{{$data.Field}}" value='{{$data.Value}}'>
                             {{else}}
-                                <div class="form-group" {{if ne $data.Width 0}}style="width: {{$data.Width}}px;"{{end}}>
-                                    {{if ne $data.Head ""}}
-                                        <label for="{{$data.Field}}"
-                                               class="col-sm-{{$.HeadWidth}} {{if $data.Must}}asterisk{{end}} control-label">{{$data.Head}}</label>
-                                    {{end}}
-                                    <div class="col-sm-{{$.InputWidth}}">
-                                        {{template "form_components" $data}}
+                                {{if eq $data.RowFlag 1}}
+                                    <div class="form-group">
+                                        {{if ne $data.Head ""}}
+                                            <label for="{{$data.Field}}"
+                                                class="{{if eq $data.HeadWidth 0}}col-sm-{{$.HeadWidth}}{{else}}col-sm-{{$data.HeadWidth}}{{end}} {{if $data.Must}}asterisk{{end}} control-label">{{$data.Head}}</label>
+                                        {{end}}
+                                        <div class="col-sm-{{$data.RowWidth}}">
+                                            {{template "form_components" $data}}
+                                            {{$data.Foot}} 
+                                        </div>                                                    
+                                {{else if eq $data.RowFlag 3}}
+                                    <div class="col-sm-{{$data.RowWidth}}" style="padding-left: 0px;">
+                                        {{if ne $data.Head ""}}
+                                            <label for="{{$data.Field}}"
+                                                class="{{if eq $data.HeadWidth 0}}col-sm-{{$.HeadWidth}}{{else}}col-sm-{{$data.HeadWidth}}{{end}} {{if $data.Must}}asterisk{{end}} control-label"  style="text-align:left;padding-right: 0px;padding-left: 0px;">{{$data.Head}}</label>
+                                        {{end}}
+                                        <div class="{{if eq $data.InputWidth 0}}col-sm-{{$.InputWidth}}{{else}}col-sm-{{$data.InputWidth}}{{end}}" style="padding-left: 0px;padding-right: 0px;">
+                                            {{template "form_components" $data}}
+                                        </div>
+                                        {{$data.Foot}}
+                                    </div>                                            
+                                {{else if eq $data.RowFlag 2}}
+                                        <div class="col-sm-{{$data.RowWidth}}" style="padding-right:0px;padding-left: 0px;">
+                                            {{if ne $data.Head ""}}
+                                                <label for="{{$data.Field}}"
+                                                    class="{{if eq $data.HeadWidth 0}}col-sm-{{$.HeadWidth}}{{else}}col-sm-{{$data.HeadWidth}}{{end}} {{if $data.Must}}asterisk{{end}} control-label"  style="text-align:left;padding-right: 0px;padding-left: 0px;">{{$data.Head}}</label>
+                                            {{end}}
+                                            <div class="{{if eq $data.InputWidth 0}}col-sm-{{$.InputWidth}}{{else}}col-sm-{{$data.InputWidth}}{{end}}" style="padding-left: 0px;padding-right: 0px;">
+                                                {{template "form_components" $data}}
+                                            </div>                                            
+                                        </div>
+                                        {{$data.Foot}}
                                     </div>
-                                </div>
+                                {{else}}
+                                    <div class="form-group" {{if ne $data.Width 0}}style="width: {{$data.Width}}px;"{{end}}>
+                                        {{if ne $data.Head ""}}
+                                            <label for="{{$data.Field}}"
+                                                class="{{if eq $data.HeadWidth 0}}col-sm-{{$.HeadWidth}}{{else}}col-sm-{{$data.HeadWidth}}{{end}} {{if $data.Must}}asterisk{{end}} control-label">{{$data.Head}}</label>
+                                        {{end}}
+                                        <div class="{{if eq $data.InputWidth 0}}col-sm-{{$.InputWidth}}{{else}}col-sm-{{$data.InputWidth}}{{end}}">
+                                            {{template "form_components" $data}}
+                                        </div>
+                                        {{$data.Foot}}
+                                    </div>
+                                {{end}}
                             {{end}}
                         {{end}}
                     </div>
@@ -659,7 +1067,7 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
                     {{if $data.Divider}}
                         {{if $data.DividerTitle}}
                             <div class='form-group divider'>
-                                <div class="col-sm-{{$.HeadWidth}} control-label divider-title">{{$data.DividerTitle}}</div>
+                                <div class="{{if eq $data.HeadWidth 0}}col-sm-{{$.HeadWidth}}{{else}}col-sm-{{$data.HeadWidth}}{{end}} control-label divider-title">{{$data.DividerTitle}}</div>
                             </div>
                         {{end}}
                         <div class='col-sm-12 pb-3'>
@@ -669,15 +1077,51 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
                     {{if $data.Hide}}
                         <input type="hidden" name="{{$data.Field}}" value='{{$data.Value}}'>
                     {{else}}
-                        <div class="form-group" {{if ne $data.Width 0}}style="width: {{$data.Width}}px;"{{end}}>
-                            {{if ne $data.Head ""}}
-                                <label for="{{$data.Field}}"
-                                       class="col-sm-{{$.HeadWidth}} {{if $data.Must}}asterisk{{end}} control-label">{{$data.Head}}</label>
-                            {{end}}
-                            <div class="col-sm-{{$.InputWidth}}">
-                                {{template "form_components" $data}}
+                        {{if eq $data.RowFlag 1}}
+                            <div class="form-group">
+                                {{if ne $data.Head ""}}
+                                    <label for="{{$data.Field}}"
+                                        class="{{if eq $data.HeadWidth 0}}col-sm-{{$.HeadWidth}}{{else}}col-sm-{{$data.HeadWidth}}{{end}} {{if $data.Must}}asterisk{{end}} control-label">{{$data.Head}}</label>
+                                {{end}}
+                                <div class="col-sm-{{$data.RowWidth}}">
+                                    {{template "form_components" $data}}
+                                    {{$data.Foot}} 
+                                </div>                                                    
+                        {{else if eq $data.RowFlag 3}}
+                            <div class="col-sm-{{$data.RowWidth}}" style="padding-left: 0px;">
+                                {{if ne $data.Head ""}}
+                                    <label for="{{$data.Field}}"
+                                        class="{{if eq $data.HeadWidth 0}}col-sm-{{$.HeadWidth}}{{else}}col-sm-{{$data.HeadWidth}}{{end}} {{if $data.Must}}asterisk{{end}} control-label" style="text-align:left;padding-right: 0px;padding-left: 0px;">{{$data.Head}}</label>
+                                {{end}}
+                                <div class="{{if eq $data.InputWidth 0}}col-sm-{{$.InputWidth}}{{else}}col-sm-{{$data.InputWidth}}{{end}}" style="padding-left: 0px;padding-right: 0px;">
+                                    {{template "form_components" $data}}
+                                </div>
+                                {{$data.Foot}}
+                            </div>                                            
+                        {{else if eq $data.RowFlag 2}}
+                                <div class="col-sm-{{$data.RowWidth}}" style="padding-right:0px;padding-left: 0px;">
+                                    {{if ne $data.Head ""}}
+                                        <label for="{{$data.Field}}"
+                                            class="{{if eq $data.HeadWidth 0}}col-sm-{{$.HeadWidth}}{{else}}col-sm-{{$data.HeadWidth}}{{end}} {{if $data.Must}}asterisk{{end}} control-label" style="text-align:left;padding-right: 0px;padding-left: 0px;">{{$data.Head}}</label>
+                                    {{end}}
+                                    <div class="{{if eq $data.InputWidth 0}}col-sm-{{$.InputWidth}}{{else}}col-sm-{{$data.InputWidth}}{{end}}" style="padding-left: 0px;padding-right: 0px;">
+                                        {{template "form_components" $data}}
+                                    </div>                                    
+                                </div>
+                                {{$data.Foot}}
                             </div>
-                        </div>
+                        {{else}}
+                            <div class="form-group" {{if ne $data.Width 0}}style="width: {{$data.Width}}px;"{{end}}>
+                                {{if ne $data.Head ""}}
+                                    <label for="{{$data.Field}}"
+                                        class="{{if eq $data.HeadWidth 0}}col-sm-{{$.HeadWidth}}{{else}}col-sm-{{$data.HeadWidth}}{{end}} {{if $data.Must}}asterisk{{end}} control-label">{{$data.Head}}</label>
+                                {{end}}
+                                <div class="{{if eq $data.InputWidth 0}}col-sm-{{$.InputWidth}}{{else}}col-sm-{{$data.InputWidth}}{{end}}">
+                                    {{template "form_components" $data}}
+                                </div>
+                                {{$data.Foot}}
+                            </div>
+                        {{end}}
                     {{end}}
                 {{end}}
             </div>
@@ -689,7 +1133,7 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
             {{if $data.Divider}}
                 {{if $data.DividerTitle}}
                     <div class='form-group divider'>
-                        <div class="col-sm-{{$.HeadWidth}} control-label divider-title">{{$data.DividerTitle}}</div>
+                        <div class="{{if eq $data.HeadWidth 0}}col-sm-{{$.HeadWidth}}{{else}}col-sm-{{$data.HeadWidth}}{{end}} control-label divider-title">{{$data.DividerTitle}}</div>
                     </div>
                 {{end}}
                 <div class='col-sm-12 pb-3'>
@@ -702,11 +1146,12 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
                 <div class="form-group" style="float: left;{{if ne $data.Width 0}}width: {{$data.Width}}px;{{end}}">
                     {{if ne $data.Head ""}}
                         <label for="{{$data.Field}}"
-                               class="col-sm-{{$.HeadWidth}} {{if $data.Must}}asterisk{{end}} control-label">{{$data.Head}}</label>
+                               class="{{if eq $data.HeadWidth 0}}col-sm-{{$.HeadWidth}}{{else}}col-sm-{{$data.HeadWidth}}{{end}} {{if $data.Must}}asterisk{{end}} control-label">{{$data.Head}}</label>
                     {{end}}
-                    <div class="col-sm-{{$.InputWidth}}">
+                    <div class="{{if eq $data.InputWidth 0}}col-sm-{{$.InputWidth}}{{else}}col-sm-{{$data.InputWidth}}{{end}}">
                         {{template "form_components" $data}}
                     </div>
+                    {{$data.Foot}}
                 </div>
             {{end}}
         {{end}}
@@ -717,7 +1162,7 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
             {{if $data.Divider}}
                 {{if $data.DividerTitle}}
                     <div class='form-group divider'>
-                        <div class="col-sm-{{$.HeadWidth}} control-label divider-title">{{$data.DividerTitle}}</div>
+                        <div class="{{if eq $data.HeadWidth 0}}col-sm-{{$.HeadWidth}}{{else}}col-sm-{{$data.HeadWidth}}{{end}} control-label divider-title">{{$data.DividerTitle}}</div>
                     </div>
                 {{end}}
                 <div class='col-sm-12 pb-3'>
@@ -727,20 +1172,56 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
             {{if $data.Hide}}
                 <input type="hidden" name="{{$data.Field}}" value='{{$data.Value}}'>
             {{else}}
-                <div class="form-group" {{if ne $data.Width 0}}style="width: {{$data.Width}}px;"{{end}}>
-                    {{if ne $data.Head ""}}
-                        <label for="{{$data.Field}}"
-                               class="col-sm-{{$.HeadWidth}} {{if $data.Must}}asterisk{{end}} control-label">{{$data.Head}}</label>
-                    {{end}}
-                    <div class="col-sm-{{$.InputWidth}}">
-                        {{template "form_components" $data}}
+                {{if eq $data.RowFlag 1}}
+                    <div class="form-group">
+                        {{if ne $data.Head ""}}
+                            <label for="{{$data.Field}}"
+                                class="{{if eq $data.HeadWidth 0}}col-sm-{{$.HeadWidth}}{{else}}col-sm-{{$data.HeadWidth}}{{end}} {{if $data.Must}}asterisk{{end}} control-label">{{$data.Head}}</label>
+                        {{end}}
+                        <div class="col-sm-{{$data.RowWidth}}">
+                            {{template "form_components" $data}}
+                            {{$data.Foot}} 
+                        </div>                                                    
+                {{else if eq $data.RowFlag 3}}
+                    <div class="col-sm-{{$data.RowWidth}}" style="padding-left: 0px;">
+                        {{if ne $data.Head ""}}
+                            <label for="{{$data.Field}}"
+                                class="{{if eq $data.HeadWidth 0}}col-sm-{{$.HeadWidth}}{{else}}col-sm-{{$data.HeadWidth}}{{end}} {{if $data.Must}}asterisk{{end}} control-label" style="text-align:left;padding-right: 0px;padding-left: 0px;">{{$data.Head}}</label>
+                        {{end}}
+                        <div class="{{if eq $data.InputWidth 0}}col-sm-{{$.InputWidth}}{{else}}col-sm-{{$data.InputWidth}}{{end}}" style="padding-left: 0px;padding-right: 0px;">
+                            {{template "form_components" $data}}
+                        </div>
+                        {{$data.Foot}}
+                    </div>                                            
+                {{else if eq $data.RowFlag 2}}
+                        <div class="col-sm-{{$data.RowWidth}}" style="padding-right:0px;padding-left: 0px;">
+                            {{if ne $data.Head ""}}
+                                <label for="{{$data.Field}}"
+                                    class="{{if eq $data.HeadWidth 0}}col-sm-{{$.HeadWidth}}{{else}}col-sm-{{$data.HeadWidth}}{{end}} {{if $data.Must}}asterisk{{end}} control-label" style="text-align:left;padding-right: 0px;padding-left: 0px;">{{$data.Head}}</label>
+                            {{end}}
+                            <div class="{{if eq $data.InputWidth 0}}col-sm-{{$.InputWidth}}{{else}}col-sm-{{$data.InputWidth}}{{end}}" style="padding-left: 0px;padding-right: 0px;">
+                                {{template "form_components" $data}}
+                            </div>                            
+                        </div>
+                        {{$data.Foot}}
                     </div>
-                </div>
+                {{else}}
+                    <div class="form-group" {{if ne $data.Width 0}}style="width: {{$data.Width}}px;"{{end}}>
+                        {{if ne $data.Head ""}}
+                            <label for="{{$data.Field}}"
+                                class="{{if eq $data.HeadWidth 0}}col-sm-{{$.HeadWidth}}{{else}}col-sm-{{$data.HeadWidth}}{{end}} {{if $data.Must}}asterisk{{end}} control-label">{{$data.Head}}</label>
+                        {{end}}
+                        <div class="{{if eq $data.InputWidth 0}}col-sm-{{$.InputWidth}}{{else}}col-sm-{{$data.InputWidth}}{{end}}">
+                            {{template "form_components" $data}}
+                        </div>
+                        {{$data.Foot}}
+                    </div>
+                {{end}}              
             {{end}}
         {{end}}
 
     {{end}}
-{{end}}`,"components/form_layout_default":`{{define "form_layout_default"}}
+{{end}}`, "components/form_layout_default": `{{define "form_layout_default"}}
 
     <div class="box-body">
         <div class="fields-group">
@@ -748,7 +1229,7 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
         </div>
     </div>
 
-{{end}}`,"components/form_layout_flow":`{{define "form_layout_flow"}}
+{{end}}`, "components/form_layout_flow": `{{define "form_layout_flow"}}
 
     <div class="box-body">
         <div class="fields-group">
@@ -756,7 +1237,7 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
         </div>
     </div>
 
-{{end}}`,"components/form_layout_tab":`{{define "form_layout_tab"}}
+{{end}}`, "components/form_layout_tab": `{{define "form_layout_tab"}}
 
     <div class="col-md-12">
         <div class="nav-tabs-custom">
@@ -783,11 +1264,11 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
         </div>
     </div>
 
-{{end}}`,"components/form_layout_two_col":`{{define "form_layout_two_col"}}
+{{end}}`, "components/form_layout_two_col": `{{define "form_layout_two_col"}}
     <div class="row">
         {{ template "form_components_layout" .}}
     </div>
-{{end}}`,"components/image":`{{define "image"}}
+{{end}}`, "components/image": `{{define "image"}}
     {{if .HasModal}}
         <img src="{{.Src}}" width="{{.Width}}" height="{{.Height}}" data-toggle="modal" data-target="#img_{{.Uuid}}" style="cursor: zoom-in;">
         <div id="img_{{.Uuid}}" class="modal fade {{.Uuid}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -815,14 +1296,16 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
     {{else}}
         <img src="{{.Src}}" width="{{.Width}}" height="{{.Height}}">
     {{end}}
-{{end}}`,"components/label":`{{define "label"}}
+{{end}}`, "components/label": `{{define "label"}}
 <span class="label label-{{.Type}}" style="background-color: {{.Color}};">{{langHtml .Content}}</span>
-{{end}}`,"components/link":`{{define "link"}}
+{{end}}`, "components/link": `{{define "link"}}
     <a class="{{.Class}}" {{.Attributes}} data-title="{{.Title}}" href="{{.URL}}">{{.Content}}</a>
-{{end}}`,"components/paginator":`{{define "paginator"}}
-    <div style="float: left;margin-top: 21px;">{{lang "showing"}} <b>{{.CurPageStartIndex}}</b> {{lang "to"}}
-        <b>{{.CurPageEndIndex}}</b> {{lang "of"}} <b>{{.Total}}</b> {{lang "entries"}} &nbsp;&nbsp;&nbsp;{{.ExtraInfo}}
-    </div>
+{{end}}`, "components/paginator": `{{define "paginator"}}
+    {{if not .HideEntriesInfo}}
+        <div style="float: left;margin-top: 21px;">{{lang "showing"}} <b>{{.CurPageStartIndex}}</b> {{lang "to"}}
+            <b>{{.CurPageEndIndex}}</b> {{lang "of"}} <b>{{.Total}}</b> {{lang "entries"}} &nbsp;&nbsp;&nbsp;{{.ExtraInfo}}
+        </div>
+    {{end}}
     <ul class="pagination pagination-sm no-margin pull-right">
         <!-- Previous Page Link -->
         <li class="page-item {{.PreviousClass}}">
@@ -879,31 +1362,51 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
             $.pjax({url: this.value, container: '#pjax-container'});
         });
     </script>
-{{end}}`,"components/popup":`{{define "popup"}}
-<div class="modal fade" id="{{.ID}}" tabindex="-1" role="dialog" aria-labelledby="{{.ID}}" aria-hidden="true">
-    <div class="modal-dialog modal-{{.Size}}" role="document">
-        <div class="modal-content">
+{{end}}`, "components/popup": `{{define "popup"}}
+<div class="modal fade {{if .Draggable}}draggable{{end}}" id="{{.ID}}" tabindex="-1" role="dialog" aria-labelledby="{{.ID}}" aria-hidden="true">
+    <div class="modal-dialog modal-{{.Size}}" role="document" style="{{if ne .Width ""}}width:{{.Width}};{{end}}">
+        <div class="modal-content" style="{{if ne .Width ""}}width:{{.Width}};{{end}}">
             <div class="modal-header">
                 <h5 class="modal-title" id="{{.ID}}Title">{{langHtml .Title}}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="{{if ne .Height ""}}height:{{.Height}};{{end}}">
                 {{langHtml .Body}}
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{lang "Close"}}</button>
-                {{if .Footer}}
-                <button type="button" class="btn btn-primary">{{langHtml .Footer}}</button>
-                {{end}}
-            </div>
+            {{if not .HideFooter}}
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{lang "Close"}}</button>
+                    {{if .Footer}}
+                    <button type="button" class="btn btn-primary">{{langHtml .Footer}}</button>
+                    {{end}}
+                </div>
+            {{end}}
         </div>
     </div>
 </div>
-{{end}}`,"components/row":`{{define "row"}}
+    {{if .Draggable}}
+        <script>
+            $('#{{.ID}}>.modal-dialog').draggable({
+                cursor: 'move',
+                handle: '.modal-header'
+            });
+            $('#{{.ID}}>.modal-dialog>.modal-content').resizable({
+                minHeight: 300,
+                minWidth: 300
+            });
+            $('#{{.ID}}>.modal-dialog>.modal-content>.modal-header').css('cursor', 'move');
+            $('#{{.ID}}').on('show.bs.modal', function () {
+                $(this).find('.modal-body').css({
+                    'max-height':'100%'
+                });
+            });
+        </script>
+    {{end}}
+{{end}}`, "components/row": `{{define "row"}}
 <div class="row">{{langHtml .Content}}</div>
-{{end}}`,"components/table/box-header":`{{define "box-header"}}
+{{end}}`, "components/table/box-header": `{{define "box-header"}}
     <div class="pull-right">
 
         {{if ne .IsHideRowSelector true}}
@@ -999,7 +1502,7 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
     </span>
     <script>
         let toastMsg = '{{lang "Refresh succeeded"}} !';
-        $('.grid-refresh').on('click', function () {
+        $('.grid-refresh').unbind('click').on('click', function () {
             $.pjax.reload('#pjax-container');
             toastr.success(toastMsg);
         });
@@ -1036,14 +1539,16 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
 
         {{end}}
     </script>
-{{end}}`,"components/table":`{{define "table"}}
+{{end}}`, "components/table": `{{define "table"}}
     <table class="table table-{{.Style}}" style="min-width: {{.MinWidth}};table-layout: {{.Layout}};">
         {{if eq .Type "table"}}
             {{if not .HideThead}}
                 <thead>
                 <tr>
                     {{range $key, $head := .Thead}}
-                        {{if eq $head.Width ""}}
+                        {{if eq $head.Width "0px"}}
+                            <th>
+                        {{else if eq $head.Width ""}}
                             <th>
                         {{else}}
                             <th style="width: {{$head.Width}}">
@@ -1057,6 +1562,7 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
         {{end}}
         <tbody>
         {{if eq .Type "data-table"}}
+            {{$SortUrlParam := .SortUrl}}
             <tr>
                 {{if eq .IsTab false}}
                     <th style="text-align: center;">
@@ -1065,7 +1571,9 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
                 {{end}}
                 {{range $key, $head := .Thead}}
                     {{if eq $head.Hide false}}
-                        {{if eq $head.Width ""}}
+                        {{if eq $head.Width "0px"}}
+                            <th>
+                        {{else if eq $head.Width ""}}
                             <th>
                         {{else}}
                             <th style="width: {{$head.Width}}">
@@ -1172,7 +1680,7 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
                         {{else}}
                             <td style="width: {{$head2.Width}}">
                         {{end}}
-                            {{(index $info $head2.Head).Content}}
+                        {{(index $info $head2.Head).Content}}
                         </td>
                     {{end}}
                 {{end}}
@@ -1279,12 +1787,18 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
                 if (sort !== -1 && sort_type !== -1) {
                     let sortFa = $('#sort-' + sort);
                     if (sort_type === 'asc') {
-                        sortFa.attr('href', '?__sort=' + sort + "&__sort_type=desc")
+                        sortFa.attr('href', '?__sort=' + sort + "&__sort_type=desc" + decodeURIComponent("{{.SortUrl}}"))
                     } else {
-                        sortFa.attr('href', '?__sort=' + sort + "&__sort_type=asc")
+                        sortFa.attr('href', '?__sort=' + sort + "&__sort_type=asc" + decodeURIComponent("{{.SortUrl}}"))
                     }
                     sortFa.removeClass('fa-sort');
                     sortFa.addClass('fa-sort-amount-' + sort_type);
+                } else {
+                    let sortParam = decodeURIComponent("{{.SortUrl}}");
+                    let sortHeads = $(".fa.fa-fw.fa-sort");
+                    for (let i = 0; i < sortHeads.length; i++) {
+                        $(sortHeads[i]).attr('href', $(sortHeads[i]).attr('href') + sortParam)
+                    }
                 }
             });
 
@@ -1294,7 +1808,7 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
 
             {{if ne .IsHideRowSelector true}}
 
-            $('.column-select-all').on('click', function () {
+            $('.column-select-all').unbind('click').on('click', function () {
                 if ($(this).data('check') === '') {
                     $('.column-select-item').iCheck('check');
                     $(this).data('check', 'true')
@@ -1304,7 +1818,7 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
                 }
             });
 
-            $('.column-select-submit').on('click', function () {
+            $('.column-select-submit').unbind('click').on('click', function () {
 
                 let param = new Map();
                 param.set('__columns', selectedAllFieldsRows().join(','));
@@ -1330,7 +1844,7 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
 
             {{if .ExportUrl}}
 
-            $('.grid-batch-1').on('click', function () {
+            $('.grid-batch-1').unbind('click').on('click', function () {
                 let rows = selectedRows();
                 if (rows.length > 0) {
                     ExportAll(rows.join())
@@ -1369,7 +1883,7 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
                 DeletePost($(this).data('id'))
             });
 
-            $('.grid-batch-0').on('click', function () {
+            $('.grid-batch-0').unbind('click').on('click', function () {
                 let rows = selectedRows();
                 if (rows.length > 0) {
                     DeletePost(rows.join())
@@ -1423,7 +1937,14 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
                                 } else {
                                     swal(data.msg, '', 'error');
                                 }
-                            }
+                            },
+                            error: function (data) {
+                                if (data.responseText !== "") {
+                                    swal(data.responseJSON.msg, '', 'error');
+                                } else {
+                                    swal("{{lang "error"}}", '', 'error');
+                                }
+                            },
                         });
                     });
             }
@@ -1574,7 +2095,7 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
             }
         </style>
     {{end}}
-{{end}}`,"components/tabs":`{{define "tabs"}}
+{{end}}`, "components/tabs": `{{define "tabs"}}
 <div class="nav-tabs-custom">
     <ul class="nav nav-tabs">
         {{range $key, $data := .Data}}
@@ -1599,7 +2120,7 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
         {{end}}
     </div>
 </div>
-{{end}}`,"components/tree-header":`{{define "tree-header"}}
+{{end}}`, "components/tree-header": `{{define "tree-header"}}
 <div class="btn-group">
     <a class="btn btn-primary btn-sm tree-model-tree-tools" data-action="expand">
         <i class="fa fa-plus-square-o"></i>&nbsp;{{lang "expand"}}
@@ -1618,7 +2139,7 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
 </div>
 <div class="btn-group">
 </div>
-{{end}}`,"components/tree":`{{define "tree"}}
+{{end}}`, "components/tree": `{{define "tree"}}
     <div class="dd" id="tree-model">
         {{$EditUrl := .EditUrl}}
         {{$UrlPrefix := .UrlPrefix}}
@@ -1640,9 +2161,10 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
                                     href="{{$UrlPrefix}}{{$list.Url}}" class="dd-nodrag">{{$UrlPrefix}}{{$list.Url}}</a>
                         {{end}}
                         <span class="pull-right dd-nodrag">
-                <a href="{{$EditUrl}}?id={{$list.ID}}"><i class="fa fa-edit"></i></a>
-                <a href="javascript:void(0);" data-id="{{$list.ID}}" class="tree_branch_delete"><i class="fa fa-trash"></i></a>
-            </span>
+                            <a href="{{$EditUrl}}?id={{$list.ID}}"><i class="fa fa-edit"></i></a>
+                            <a href="javascript:void(0);" data-id="{{$list.ID}}" class="tree_branch_delete"><i
+                                        class="fa fa-trash"></i></a>
+                        </span>
                     </div>
                     {{if gt (len $list.ChildrenList) 0}}
                         <ol class="dd-list">
@@ -1650,23 +2172,67 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
                                 <li class="dd-item" data-id='{{$item.ID}}'>
                                     <div class="dd-handle">
                                         {{if eq $item.Url ""}}
-                                            <i class="fa {{$item.Icon}}"></i>&nbsp;<strong>{{$item.Name}}</strong>&nbsp;&nbsp;&nbsp;<a
+                                            <i class="fa {{$item.Icon}}"></i>&nbsp;
+                                            <strong>{{$item.Name}}</strong>&nbsp;&nbsp;&nbsp;<a
                                                     href="{{$item.Url}}" class="dd-nodrag">{{$item.Url}}</a>
                                         {{else if eq $item.Url "/"}}
-                                            <i class="fa {{$item.Icon}}"></i>&nbsp;<strong>{{$item.Name}}</strong>&nbsp;&nbsp;&nbsp;<a
+                                            <i class="fa {{$item.Icon}}"></i>&nbsp;
+                                            <strong>{{$item.Name}}</strong>&nbsp;&nbsp;&nbsp;<a
                                                     href="{{$UrlPrefix}}" class="dd-nodrag">{{$UrlPrefix}}</a>
                                         {{else if (isLinkUrl $item.Url)}}
-                                            <i class="fa {{$item.Icon}}"></i>&nbsp;<strong>{{$item.Name}}</strong>&nbsp;&nbsp;&nbsp;<a
+                                            <i class="fa {{$item.Icon}}"></i>&nbsp;
+                                            <strong>{{$item.Name}}</strong>&nbsp;&nbsp;&nbsp;<a
                                                     href="{{$item.Url}}" class="dd-nodrag">{{$item.Url}}</a>
                                         {{else}}
-                                            <i class="fa {{$item.Icon}}"></i>&nbsp;<strong>{{$item.Name}}</strong>&nbsp;&nbsp;&nbsp;<a
-                                                    href="{{$UrlPrefix}}{{$item.Url}}" class="dd-nodrag">{{$UrlPrefix}}{{$item.Url}}</a>
+                                            <i class="fa {{$item.Icon}}"></i>&nbsp;
+                                            <strong>{{$item.Name}}</strong>&nbsp;&nbsp;&nbsp;<a
+                                                    href="{{$UrlPrefix}}{{$item.Url}}"
+                                                    class="dd-nodrag">{{$UrlPrefix}}{{$item.Url}}</a>
                                         {{end}}
                                         <span class="pull-right dd-nodrag">
-                                <a href="{{$EditUrl}}?id={{$item.ID}}"><i class="fa fa-edit"></i></a>
-                                <a href="javascript:void(0);" data-id="{{$item.ID}}" class="tree_branch_delete"><i class="fa fa-trash"></i></a>
-                            </span>
+                                            <a href="{{$EditUrl}}?id={{$item.ID}}"><i class="fa fa-edit"></i></a>
+                                            <a href="javascript:void(0);" data-id="{{$item.ID}}"
+                                               class="tree_branch_delete"><i class="fa fa-trash"></i></a>
+                                        </span>
                                     </div>
+                                    {{if gt (len $item.ChildrenList) 0}}
+                                        <ol class="dd-list">
+                                            {{range $key2, $subItem := $item.ChildrenList}}
+                                                <li class="dd-item" data-id='{{$subItem.ID}}'>
+                                                    <div class="dd-handle">
+                                                        {{if eq $subItem.Url ""}}
+                                                            <i class="fa {{$subItem.Icon}}"></i>&nbsp;
+                                                            <strong>{{$subItem.Name}}</strong>&nbsp;&nbsp;&nbsp;<a
+                                                                    href="{{$subItem.Url}}"
+                                                                    class="dd-nodrag">{{$subItem.Url}}</a>
+                                                        {{else if eq $subItem.Url "/"}}
+                                                            <i class="fa {{$subItem.Icon}}"></i>&nbsp;
+                                                            <strong>{{$subItem.Name}}</strong>&nbsp;&nbsp;&nbsp;<a
+                                                                    href="{{$UrlPrefix}}"
+                                                                    class="dd-nodrag">{{$UrlPrefix}}</a>
+                                                        {{else if (isLinkUrl $subItem.Url)}}
+                                                            <i class="fa {{$subItem.Icon}}"></i>&nbsp;
+                                                            <strong>{{$subItem.Name}}</strong>&nbsp;&nbsp;&nbsp;<a
+                                                                    href="{{$subItem.Url}}"
+                                                                    class="dd-nodrag">{{$subItem.Url}}</a>
+                                                        {{else}}
+                                                            <i class="fa {{$subItem.Icon}}"></i>&nbsp;
+                                                            <strong>{{$subItem.Name}}</strong>&nbsp;&nbsp;&nbsp;<a
+                                                                    href="{{$UrlPrefix}}{{$subItem.Url}}"
+                                                                    class="dd-nodrag">{{$UrlPrefix}}{{$subItem.Url}}</a>
+                                                        {{end}}
+                                                        <span class="pull-right dd-nodrag">
+                                                            <a href="{{$EditUrl}}?id={{$subItem.ID}}"><i
+                                                                        class="fa fa-edit"></i></a>
+                                                            <a href="javascript:void(0);" data-id="{{$subItem.ID}}"
+                                                               class="tree_branch_delete"><i
+                                                                        class="fa fa-trash"></i></a>
+                                                        </span>
+                                                    </div>
+                                                </li>
+                                            {{end}}
+                                        </ol>
+                                    {{end}}
                                 </li>
                             {{end}}
                         </ol>
@@ -1681,7 +2247,7 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
             $('.tree_branch_delete').click(function () {
                 let id = $(this).data('id');
                 swal({
-                        title: {{lang "are you sure to delete"}} + "?",
+                        title: {{lang "are you sure to delete"}} +"?",
                         type: "warning",
                         showCancelButton: true,
                         confirmButtonColor: "#DD6B55",
@@ -1692,16 +2258,23 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
                     function () {
                         $.ajax({
                             method: 'post',
-                            url: {{.DeleteUrl}} + '?id=' + id,
+                            url: {{.DeleteUrl}} +'?id=' + id,
                             data: {},
                             success: function (data) {
                                 $.pjax.reload('#pjax-container');
                                 if (data.code === 200) {
-                                    swal(data.msg, '', {{lang "success"}});
+                                    swal(data.msg, '', "success");
                                 } else {
-                                    swal(data.msg, '', {{lang "error"}});
+                                    swal(data.msg, '', "error");
                                 }
-                            }
+                            },
+                            error: function (data) {
+                                if (data.responseText !== "") {
+                                    swal(data.responseJSON.msg, '', 'error');
+                                } else {
+                                    swal("{{lang "error"}}", '', 'error');
+                                }
+                            },
                         });
                     });
             });
@@ -1719,7 +2292,7 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
                 $.pjax.reload('#pjax-container');
                 toastr.success(toastMsg);
             });
-            $('.tree-model-tree-tools').on('click', function (e) {
+            $('.tree-model-tree-tools').unbind('click').on('click', function (e) {
                 let target = $(e.target),
                     action = target.data('action');
                 if (action === 'expand') {
@@ -1733,19 +2306,47 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
             $(".roles").select2({"allowClear": true, "placeholder": "Roles"});
         });
     </script>
-{{end}}`,"content":`{{define "content"}}
+{{end}}`, "components/treeview": `{{define "treeview"}}
+    <div id="{{.ID}}"></div>
     <script>
-        $('a.new-tab-link').on('click', function () {
+        $('#{{.ID}}').treeview({{.TreeJSON}});
+    </script>
+    <style>
+        .treeview .list-group-item {
+            cursor: pointer;
+        }
+
+        .treeview span.indent {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .treeview span.icon {
+            width: 12px;
+            margin-right: 5px;
+        }
+
+        .treeview .node-disabled {
+            color: silver;
+            cursor: not-allowed;
+        }
+
+        .list-group li {
+            border: none;
+            border-radius: 0px !important;
+        }
+    </style>
+{{end}}`, "content": `{{define "content"}}
+    <script>
+        $('a.new-tab-link').unbind('click').on('click', function () {
             listenerForAddNavTab($(this).attr('href'), $(this).attr('data-title'))
         });
     </script>
-    <script src="{{link .CdnUrl .UrlPrefix "/assets/dist/js/content.min.js"}}"></script>
     {{if ne .Panel.CSS ""}}
-        <script>
+        <style>
             {{.Panel.CSS}}
-        </script>
+        </style>
     {{end}}
-    {{.Panel.JS}}
     {{.AssetsList}}
     {{if ne .Panel.Title ""}}
         <section class="content-header">
@@ -1770,7 +2371,25 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
             {{.Panel.JS}}
         </script>
     {{end}}
-{{end}}`,"control_panel":`{{define "control_panel"}}
+
+    {{if .Iframe}}
+        <style>
+            .content-wrapper, .main-footer {
+                -webkit-transition: none;
+                -moz-transition: none;
+                -o-transition: none;
+                transition: none;
+                margin-left: 0px;
+            }
+            .skin-black .wrapper {
+                background-color: #ffffff !important;
+            }
+            .skin-black .wrapper .content-wrapper {
+                background-color: #ffffff !important;
+            }
+        </style>
+    {{end}}
+{{end}}`, "control_panel": `{{define "control_panel"}}
     <div class="control-sidebar-bg" style="position: fixed; height: auto;"></div>
     <aside class="control-sidebar control-sidebar-dark control-sidebar-open"
            style="position: fixed; max-height: 100%; overflow: auto;">
@@ -1968,7 +2587,7 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
             </div>
         </div>
     </aside>
-{{end}}`,"footer":`{{define "footer"}}
+{{end}}`, "footer": `{{define "footer"}}
     <footer class="main-footer">
         <div class="pull-right hidden-xs">
             <b>Version</b> {{.System.Version}}
@@ -1976,10 +2595,10 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
         <div class="pull-right hidden-xs">
             <b>Theme</b> {{.System.Theme}}&nbsp;&nbsp;
         </div>
-        <strong>Powered by <a href="https://github.com/GoAdminGroup/go-admin">GoAdmin</a>.</strong>
+        <strong>Powered by <a href="https://github.com/HongJaison/go-admin">GoAdmin</a>.</strong>
         {{.FooterInfo}}
     </footer>
-{{end}}`,"head":`{{define "head"}}
+{{end}}`, "head": `{{define "head"}}
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -1987,18 +2606,16 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
-        <link rel="stylesheet" href="{{link .CdnUrl .UrlPrefix "/assets/dist/css/all.min.css"}}">
-
         <!--[if lt IE 9]>
         <script src="{{link .CdnUrl .UrlPrefix "/assets/dist/js/html5shiv.min.js"}}"></script>
         <script src="{{link .CdnUrl .UrlPrefix "/assets/dist/js/respond.min.js"}}"></script>
         <![endif]-->
 
-        <script src="{{link .CdnUrl .UrlPrefix "/assets/dist/js/all.min.js"}}"></script>
+        {{.TmplHeadHTML}}
 
         {{.CustomHeadHtml}}
     </head>
-{{end}}`,"header":`{{define "header"}}
+{{end}}`, "header": `{{define "header"}}
     <header class="main-header">
         <!-- Logo -->
         <a href="{{.UrlPrefix}}" class="logo">
@@ -2014,16 +2631,36 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
                     <span class="sr-only">Toggle navigation</span>
                 </a>
 
-                <ul class="nav nav-tabs nav-addtabs" style="max-width: 60%">
-                </ul>
+                <div style="float: left;">
+                    <ul class="nav navbar-nav">
+                        <li class="navbar-nav-btn-left" style="display: none;">
+                            <a href="javascript:;" style="border-left: none;border-right: solid 1px #dedede;">
+                                <i class="fa fa-angle-double-left"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="nav-tabs-content">
+                    <ul class="nav nav-tabs nav-addtabs">
+                    </ul>
+                </div>
+                <div style="float: left;">
+                    <ul class="nav navbar-nav">
+                        <li class="navbar-nav-btn-right" style="display: none;">
+                            <a href="javascript:;" style="border-left: solid 1px #dedede;border-right: none;">
+                                <i class="fa fa-angle-double-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
 
                 {{ template "admin_panel" . }}
             </div>
         </nav>
     </header>
-{{end}}`,"js":`{{define "js"}}
-    <script src="{{link .CdnUrl .UrlPrefix "/assets/dist/js/all_2.min.js"}}"></script>
-{{end}}`,"layout":`{{define "layout"}}
+{{end}}`, "js": `{{define "js"}}
+    {{.TmplFootJS}}
+{{end}}`, "layout": `{{define "layout"}}
 
     <!DOCTYPE html>
     <html>
@@ -2033,9 +2670,13 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
     <body class="hold-transition {{.ColorScheme}} sidebar-mini">
     <div class="wrapper">
 
+        {{if not .Iframe}}
+
         {{ template "header" . }}
 
         {{ template "sidebar" . }}
+
+        {{end}}
 
         <div class="content-wrapper" id="pjax-container">
 
@@ -2043,18 +2684,24 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
 
         </div>
 
+        {{if not .Iframe}}
+
         {{ template "footer" . }}
+
+        {{end}}
 
     </div>
 
     {{ template "js" . }}
 
     </body>
-    {{.CustomFootHtml}}
+    {{if not .Iframe}}
+        {{.CustomFootHtml}}
+    {{end}}
     </html>
 
 {{end}}
-`,"menu":`{{define "menu"}}
+`, "menu": `{{define "menu"}}
     <ul class="sidebar-menu" data-widget="tree">
         {{$UrlPrefix := .UrlPrefix}}
         {{range $key, $list := .Menu.List }}
@@ -2084,33 +2731,55 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
                     </a>
                     <ul class="treeview-menu">
                         {{range $key2, $item := $list.ChildrenList}}
-                            <li><a href="{{$UrlPrefix}}{{$item.Url}}"><i class="fa {{$item.Icon}}"></i> {{$item.Name}}
-                                </a></li>
+                            {{if eq (len $item.ChildrenList) 0}}
+                            <li>
+                                <a href="{{$UrlPrefix}}{{$item.Url}}">
+                                    <i class="fa {{$item.Icon}}"></i> {{$item.Name}}
+                                </a>
+                            </li>
+                            {{else}}
+                                <li class="treeview {{$item.Active}}">
+                                    <a href="#">
+                                        <i class="fa {{$item.Icon}}"></i><span> {{$item.Name}}</span>
+                                        <span class="pull-right-container">
+                                            <i class="fa fa-angle-left pull-right"></i>
+                                        </span>
+                                    </a>
+                                    <ul class="treeview-menu">
+                                        {{range $key3, $subItem := $item.ChildrenList}}
+                                            <li>
+                                                <a href="{{$UrlPrefix}}{{$subItem.Url}}">
+                                                    <i class="fa {{$subItem.Icon}}"></i> {{$subItem.Name}}
+                                                </a>
+                                            </li>
+                                        {{end}}
+                                    </ul>
+                                </li>
+                            {{end}}
                         {{end}}
                     </ul>
                 </li>
             {{end}}
         {{end}}
     </ul>
-{{end}}`,"sidebar":`{{define "sidebar"}}
-    <!-- Left side column. contains the logo and sidebar -->
+{{end}}`, "sidebar": `{{define "sidebar"}}
     <aside class="main-sidebar">
-        <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
-            <!-- Sidebar user panel -->
-            <div class="user-panel">
-                <div class="pull-left image">
-                    {{if eq .User.Avatar ""}}
-                        <img src="{{.UrlPrefix}}/assets/dist/img/avatar04.png" class="img-circle" alt="User Image">
-                    {{else}}
-                        <img src="{{.User.Avatar}}" class="img-circle" alt="User Image">
-                    {{end}}
+            {{if not .User.HideUserCenterEntrance}}
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        {{if eq .User.Avatar ""}}
+                            <img src="{{.UrlPrefix}}/assets/dist/img/avatar04.png" class="img-circle" alt="User Image">
+                        {{else}}
+                            <img src="{{.User.Avatar}}" class="img-circle" alt="User Image">
+                        {{end}}
+                    </div>
+                    <div class="pull-left info">
+                        {{.User.Name}}
+                        <a href="#"><i class="fa fa-circle text-success"></i> {{lang "online"}}</a>
+                    </div>
                 </div>
-                <div class="pull-left info">
-                    {{.User.Name}}
-                    <a href="#"><i class="fa fa-circle text-success"></i> {{lang "online"}}</a>
-                </div>
-            </div>
+            {{end}}
             <!-- search form -->
             <!-- <form action="#" method="get" class="sidebar-form">
                 <div class="input-group">
@@ -2126,6 +2795,5 @@ var TemplateList = map[string]string{"admin_panel":`{{define "admin_panel"}}
             {{ template "menu" . }}
 
         </section>
-        <!-- /.sidebar -->
     </aside>
-{{end}}`,}
+{{end}}`}

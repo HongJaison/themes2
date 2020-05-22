@@ -3,6 +3,8 @@
 - [adminlte](https://github.com/HongJaison/themes2/tree/master/adminlte)
 - [sword](https://github.com/HongJaison/themes2/tree/master/sword)
 
+[中文介绍](./README_CN.md)
+
 ## How to use
 
 - Import the theme

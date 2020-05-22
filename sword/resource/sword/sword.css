@@ -12,8 +12,6 @@ body {
 }
 
 #firstnav .nav-addtabs {
-    position: absolute;
-    left: 45px;
     z-index: 98;
     height: 100%;
     border: none;
@@ -559,4 +557,17 @@ a.bg-primary:focus, a.bg-primary:hover {
 
 form .control-label.divider-title {
     color: #212121;
+}
+
+ul.treeview-menu ul.treeview-menu.menu-open {
+    background: rgb(0, 4, 8) !important;
+}
+
+.skin-black ul.treeview-menu ul.treeview-menu li.active {
+    background: rgb(0, 4, 8) !important;
+}
+
+.sa-confirm-button-container button {
+    background-color: #399efd !important;
+    box-shadow: none !important;
 }

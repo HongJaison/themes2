@@ -1,12 +1,13 @@
 package adminlte
 
 import (
-	adminTemplate "github.com/GoAdminGroup/go-admin/template"
-	"github.com/GoAdminGroup/go-admin/template/components"
-	"github.com/GoAdminGroup/go-admin/template/types"
+	adminTemplate "github.com/HongJaison/go-admin/template"
+	"github.com/HongJaison/go-admin/template/components"
+	"github.com/HongJaison/go-admin/template/types"
 	"github.com/HongJaison/themes2/adminlte/resource"
 	"github.com/HongJaison/themes2/common"
-	"html/template"
+	"github.com/gobuffalo/packr/v2"
+	"strings"
 )
 
 const (
@@ -27,7 +28,7 @@ const (
 type Theme struct {
 	ThemeName string
 	components.Base
-	common.BaseTheme
+	*common.BaseTheme
 }
 
 var Adminlte = Theme{
@@ -36,6 +37,10 @@ var Adminlte = Theme{
 		Attribute: types.Attribute{
 			TemplateList: TemplateList,
 		},
+	},
+	BaseTheme: &common.BaseTheme{
+		AssetPaths:   resource.AssetPaths,
+		TemplateList: TemplateList,
 	},
 }
 
@@ -51,38 +56,16 @@ func (t *Theme) Name() string {
 	return t.ThemeName
 }
 
-func (*Theme) GetTmplList() map[string]string {
+func (t *Theme) GetTmplList() map[string]string {
 	return TemplateList
 }
 
-func (*Theme) GetTemplate(isPjax bool) (tmpl *template.Template, name string) {
-	var err error
-
-	if !isPjax {
-		name = "layout"
-		tmpl, err = template.New("layout").Funcs(adminTemplate.DefaultFuncMap).
-			Parse(TemplateList["layout"] +
-				TemplateList["head"] + TemplateList["header"] + TemplateList["sidebar"] +
-				TemplateList["footer"] + TemplateList["js"] + TemplateList["menu"] +
-				TemplateList["admin_panel"] + TemplateList["content"])
-	} else {
-		name = "content"
-		tmpl, err = template.New("content").Funcs(adminTemplate.DefaultFuncMap).
-			Parse(TemplateList["admin_panel"] + TemplateList["content"])
-	}
-
-	if err != nil {
-		panic(err)
-	}
-
-	return
+func (t *Theme) GetAsset(path string) ([]byte, error) {
+	path = strings.Replace(path, "/assets/dist", "", -1)
+	box := packr.New("adminlte", "./resource/assets/dist")
+	return box.Find(path)
 }
 
-func (*Theme) GetAsset(path string) ([]byte, error) {
-	path = "resource" + path
-	return resource.Asset(path)
-}
-
-func (*Theme) GetAssetList() []string {
+func (t *Theme) GetAssetList() []string {
 	return resource.AssetsList
 }

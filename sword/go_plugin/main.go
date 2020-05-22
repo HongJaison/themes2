@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/GoAdminGroup/go-admin/modules/language"
-	"github.com/GoAdminGroup/go-admin/template/components"
-	"github.com/GoAdminGroup/go-admin/template/types"
+	"github.com/HongJaison/go-admin/modules/language"
+	"github.com/HongJaison/go-admin/template/components"
+	"github.com/HongJaison/go-admin/template/types"
 	"github.com/HongJaison/themes2/sword"
 	"github.com/HongJaison/themes2/sword/resource"
 	"html/template"
